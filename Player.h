@@ -5,13 +5,16 @@
 class Player
 {
 public:
-	Player(sf::RenderWindow* window);
+	Player(sf::RenderWindow* window, int numberPlayer);
 	~Player();
 
 	void update(Movement direction);
 	void draw(sf::RenderWindow* window);
 	sf::FloatRect getPlayerBound();
+
+	void addScore();
 private:
 	sf::RectangleShape player;
+	int score;
 };
 

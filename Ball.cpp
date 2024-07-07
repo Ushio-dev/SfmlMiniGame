@@ -14,21 +14,34 @@ Ball::~Ball()
 {
 }
 
-void Ball::update(sf::FloatRect player)
+void Ball::update(sf::FloatRect playerOne, sf::FloatRect playerTwo, GameState state)
 {
-	ball.move(velocity);
-	// Rebotar en los bordes de la ventana
-	sf::Vector2f position = ball.getPosition();
-	if (position.x <= 0 || position.x >= 800 - ball.getRadius() * 2)
-		velocity.x = -velocity.x;
-	if (position.y <= 0 || position.y >= 600 - ball.getRadius() * 2)
-		velocity.y = -velocity.y;
+	if (state == GameState::PLAYING) {
+		ball.move(velocity);
+		// Rebotar en los bordes de la ventana
+		sf::Vector2f position = ball.getPosition();
+		if (position.x <= 0 || position.x >= 800 - ball.getRadius() * 2)
+			velocity.x = -velocity.x;
+		if (position.y <= 0 || position.y >= 600 - ball.getRadius() * 2)
+			velocity.y = -velocity.y;
 
-	if (ball.getGlobalBounds().intersects(player))
-	{
-		velocity.x = -velocity.x;
-		velocity += sf::Vector2f(0.5f, 0.5f);
+		if (ball.getGlobalBounds().intersects(playerOne))
+		{
+			velocity.x = -velocity.x;
+			velocity += sf::Vector2f(1.f, 1.f);
+		}
+		if (ball.getGlobalBounds().intersects(playerTwo))
+		{
+			velocity.x = -velocity.x;
+			velocity += sf::Vector2f(-1.f, -1.f);
+		}
+
 	}
+
+	if (state == GameState::PAUSED) {
+		ball.move(sf::Vector2f(0.f,0.f));
+	}
+	
 }
 
 void Ball::draw(sf::RenderTarget* window)
@@ -39,6 +52,13 @@ void Ball::draw(sf::RenderTarget* window)
 sf::Vector2f Ball::getPos()
 {
 	return ball.getPosition();
+}
+
+bool Ball::isPoint(Player* player)
+{
+	// debo verificar a quien darle el punto
+	player->addScore();
+	return false;
 }
 
 void Ball::resetPosition()
