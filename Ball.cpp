@@ -7,7 +7,7 @@ Ball::Ball(sf::RenderWindow* window)
 	ball.setOrigin(ball.getRadius(), ball.getRadius());
 	ball.setPosition(window->getSize().x / 2, window->getSize().y / 2);
 
-	velocity = sf::Vector2f(-3.f, -3.f);
+	velocity = sf::Vector2f(-5.f, -5.f);
 
 	point = 0;
 }
@@ -34,7 +34,7 @@ void Ball::update(sf::FloatRect playerOne, sf::FloatRect playerTwo, GameState st
 		if (ball.getGlobalBounds().intersects(playerOne))
 		{
 			velocity.x = -velocity.x;
-			velocity += sf::Vector2f(1.f, 1.f);
+			velocity += sf::Vector2f(0.1f, 0.1f);
 		}
 		if (ball.getGlobalBounds().intersects(playerTwo))
 		{
@@ -86,7 +86,7 @@ void Ball::resetPoint()
 void Ball::resetPosition()
 {
 	ball.setPosition(sf::Vector2f(400.f, 300.f));
-	velocity = sf::Vector2f(-3.f, -3.f);
+	velocity = sf::Vector2f(-5.f, -5.f);
 }
 
 void Ball::collision(sf::FloatRect player)
