@@ -19,6 +19,8 @@ int main()
 
     sf::Text playerOneScore;
     sf::Text playerTwoScore;
+    sf::Text finishedText;
+
     sf::Font font;
     GameState gameState = GameState::PAUSED;
     std::string fontPath = "Fonts/Roboto-Bold.ttf";
@@ -43,12 +45,15 @@ int main()
   
     playerOneScore.setFont(font);
     playerTwoScore.setFont(font);
+    finishedText.setFont(font);
 
     playerOneScore.setCharacterSize(50);
     playerTwoScore.setCharacterSize(50);
+    finishedText.setCharacterSize(30);
 
     playerOneScore.setPosition(350 - playerTwoScore.getCharacterSize(), 50);
     playerTwoScore.setPosition(450 + playerTwoScore.getCharacterSize() / 2, 50);
+    finishedText.setPosition(225, 250);
 
 
     while (window.isOpen())
@@ -104,42 +109,60 @@ int main()
             }
         }
 
-        if (isPlayerOneMovingUp)
-            playerOne.update(Movement::UP);
-        if (isPlayerOneMovingDown)
-            playerOne.update(Movement::DOWN);
-        if (isPlayerTwoMovingUp)
-            playerTwo.update(Movement::UP);
-        if (isPlayerTwoMovingDown)
-            playerTwo.update(Movement::DOWN);
+        if (gameState != GameState::FINISHED) {
+            if (playerOne.getScore() != 5 && playerTwo.getScore() != 5) {
+                if (isPlayerOneMovingUp)
+                    playerOne.update(Movement::UP);
+                if (isPlayerOneMovingDown)
+                    playerOne.update(Movement::DOWN);
+                if (isPlayerTwoMovingUp)
+                    playerTwo.update(Movement::UP);
+                if (isPlayerTwoMovingDown)
+                    playerTwo.update(Movement::DOWN);
 
 
-        if (ball.getPoint() != 0) {
-            gameState = GameState::PAUSED;
+                if (ball.getPoint() != 0) {
+                    gameState = GameState::PAUSED;
 
-            if (ball.getPoint() == 1) {
-                playerOne.addScore();
+                    if (ball.getPoint() == 1) {
+                        playerOne.addScore();
+                    }
+                    else {
+                        playerTwo.addScore();
+                    }
+
+                    ball.resetPoint();
+                }
+
+                window.clear();
+
+                ball.update(playerOne.getPlayerBound(), playerTwo.getPlayerBound(), gameState);
+                ball.draw(&window);
+
+                playerOneScore.setString(std::to_string(playerOne.getScore()));
+                playerTwoScore.setString(std::to_string(playerTwo.getScore()));
+
+                playerOne.draw(&window);
+                playerTwo.draw(&window);
+
+                window.draw(playerOneScore);
+                window.draw(playerTwoScore);
             }
             else {
-                playerTwo.addScore();
+                gameState = GameState::FINISHED;
             }
-
-            ball.resetPoint();
+            
         }
+        else {
+            window.clear();
+            if (playerOne.getScore() == 5)
+                finishedText.setString("El ganador es el Jugador 1");
+            else
+                finishedText.setString("El ganador es el Jugador 2");
 
-        window.clear();
-
-        ball.update(playerOne.getPlayerBound(), playerTwo.getPlayerBound(), gameState);
-        ball.draw(&window);
-
-        playerOneScore.setString(std::to_string(playerOne.getScore()));
-        playerTwoScore.setString(std::to_string(playerTwo.getScore()));
-
-        playerOne.draw(&window);
-        playerTwo.draw(&window);
-
-        window.draw(playerOneScore);
-        window.draw(playerTwoScore);
+            window.draw(finishedText);
+        }
+        
  
         window.display();
         

@@ -3,4 +3,5 @@
 enum GameState {
 	PLAYING,
 	PAUSED,	 
+	FINISHED
 };
