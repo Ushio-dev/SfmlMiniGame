@@ -55,3 +55,8 @@ void Player::addScore()
 	score += 1;
 }
 
+int Player::getScore() const
+{
+	return score;
+}
+

@@ -13,6 +13,8 @@ public:
 	sf::FloatRect getPlayerBound();
 
 	void addScore();
+
+	int getScore() const;
 private:
 	sf::RectangleShape player;
 	int score;

@@ -2,7 +2,12 @@
 #include "Ball.h"
 #include "Player.h"
 #include "iostream"
+#include <fstream>
 
+bool fileExists(const std::string& filename) {
+    std::ifstream file(filename);
+    return file.good();
+}
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Pong");
@@ -12,25 +17,39 @@ int main()
     Player playerOne = Player(&window, 1);
     Player playerTwo = Player(&window, 2);
 
-    sf::Text texto = sf::Text();
+    sf::Text playerOneScore;
+    sf::Text playerTwoScore;
     sf::Font font;
     GameState gameState = GameState::PLAYING;
-    
-    int isPoint;
+    std::string fontPath = "Fonts/Roboto-Bold.ttf";
+
 
     bool isPlayerOneMovingUp = false;
     bool isPlayerOneMovingDown = false;
     bool isPlayerTwoMovingUp = false;
     bool isPlayerTwoMovingDown = false;
-     /*
-    if (!font.loadFromFile("fonts/bahnschrift.ttf")) {
-        // error 
-        //throw("No se puede abrir archivo");
-        return 1;
+     
+    if (!fileExists(fontPath)) {
+        std::cerr << "El archivo no existe en: " << fontPath << std::endl;
+        return -1;
     }
-    */
+    else {
+        std::cout << "El archivo existe en: " << fontPath << std::endl;
+    }
 
-    texto.setFont(font);
+    if (!font.loadFromFile(fontPath)) {
+        throw("No se puede abrir archivo");
+    }
+   
+    playerOneScore.setFont(font);
+    playerTwoScore.setFont(font);
+
+    playerOneScore.setCharacterSize(40);
+    playerTwoScore.setCharacterSize(40);
+
+    playerOneScore.setPosition(400 - 50.f, 50.f);
+    playerTwoScore.setPosition(400 + 50.f, 50.f);
+
 
     while (window.isOpen())
     {
@@ -107,14 +126,22 @@ int main()
 
             ball.resetPoint();
         }
+
         window.clear();
+
         ball.update(playerOne.getPlayerBound(), playerTwo.getPlayerBound(), gameState);
         ball.draw(&window);
-        std::cout << ball.getPoint() << '\n';
+        std::cout << playerOne.getScore() << '\n';
+
+        playerOneScore.setString(std::to_string(playerOne.getScore()));
+        playerTwoScore.setString(std::to_string(playerTwo.getScore()));
+
         playerOne.draw(&window);
         playerTwo.draw(&window);
 
-        texto.setString("Hola Mundo");
+        window.draw(playerOneScore);
+        window.draw(playerTwoScore);
+ 
         window.display();
         
     }

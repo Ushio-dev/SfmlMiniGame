@@ -65,11 +65,11 @@ void Ball::isPoint()
 	// debo verificar a quien darle el punto
 	sf::Vector2f position = ball.getPosition();
 	if (position.x <= 0) {
-		point = 1;
+		point = 2;
 	}
 
 	if (position.x >= 800 - ball.getRadius() * 2) {
-		point = 2;
+		point = 1;
 	}
 }
 
