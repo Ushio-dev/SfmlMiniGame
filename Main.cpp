@@ -20,7 +20,7 @@ int main()
     sf::Text playerOneScore;
     sf::Text playerTwoScore;
     sf::Font font;
-    GameState gameState = GameState::PLAYING;
+    GameState gameState = GameState::PAUSED;
     std::string fontPath = "Fonts/Roboto-Bold.ttf";
 
 
@@ -40,15 +40,15 @@ int main()
     if (!font.loadFromFile(fontPath)) {
         throw("No se puede abrir archivo");
     }
-   
+  
     playerOneScore.setFont(font);
     playerTwoScore.setFont(font);
 
-    playerOneScore.setCharacterSize(40);
-    playerTwoScore.setCharacterSize(40);
+    playerOneScore.setCharacterSize(50);
+    playerTwoScore.setCharacterSize(50);
 
-    playerOneScore.setPosition(400 - 50.f, 50.f);
-    playerTwoScore.setPosition(400 + 50.f, 50.f);
+    playerOneScore.setPosition(350 - playerTwoScore.getCharacterSize(), 50);
+    playerTwoScore.setPosition(450 + playerTwoScore.getCharacterSize() / 2, 50);
 
 
     while (window.isOpen())
@@ -131,7 +131,6 @@ int main()
 
         ball.update(playerOne.getPlayerBound(), playerTwo.getPlayerBound(), gameState);
         ball.draw(&window);
-        std::cout << playerOne.getScore() << '\n';
 
         playerOneScore.setString(std::to_string(playerOne.getScore()));
         playerTwoScore.setString(std::to_string(playerTwo.getScore()));

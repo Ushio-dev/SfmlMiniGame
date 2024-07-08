@@ -4,7 +4,7 @@ Ball::Ball(sf::RenderWindow* window)
 {
 	this->ball = sf::CircleShape(10.f);
 	ball.setFillColor(sf::Color::White);
-	ball.setOrigin(ball.getRadius() / 2, ball.getRadius() / 2);
+	ball.setOrigin(ball.getRadius(), ball.getRadius());
 	ball.setPosition(window->getSize().x / 2, window->getSize().y / 2);
 
 	velocity = sf::Vector2f(-3.f, -3.f);
