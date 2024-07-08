@@ -17,7 +17,9 @@ public:
 	void update(sf::FloatRect playerOne, sf::FloatRect playerTwo, GameState state);
 	void draw(sf::RenderTarget* target);
 	sf::Vector2f getPos();
-	bool isPoint(Player* player);
+	void isPoint();
+	int getPoint() const;
+	void resetPoint();
 
 private:
 	sf::CircleShape ball;
@@ -26,5 +28,7 @@ private:
 	
 	void resetPosition();
 	void collision(sf::FloatRect player);
+
+	int point;
 };
 

@@ -54,3 +54,4 @@ void Player::addScore()
 {
 	score += 1;
 }
+

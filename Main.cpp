@@ -15,7 +15,8 @@ int main()
     sf::Text texto = sf::Text();
     sf::Font font;
     GameState gameState = GameState::PLAYING;
-
+    
+    int isPoint;
 
     bool isPlayerOneMovingUp = false;
     bool isPlayerOneMovingDown = false;
@@ -93,15 +94,29 @@ int main()
         if (isPlayerTwoMovingDown)
             playerTwo.update(Movement::DOWN);
 
+
+        if (ball.getPoint() != 0) {
+            gameState = GameState::PAUSED;
+
+            if (ball.getPoint() == 1) {
+                playerOne.addScore();
+            }
+            else {
+                playerTwo.addScore();
+            }
+
+            ball.resetPoint();
+        }
         window.clear();
         ball.update(playerOne.getPlayerBound(), playerTwo.getPlayerBound(), gameState);
         ball.draw(&window);
-
+        std::cout << ball.getPoint() << '\n';
         playerOne.draw(&window);
         playerTwo.draw(&window);
 
         texto.setString("Hola Mundo");
         window.display();
+        
     }
 
     return 0;
