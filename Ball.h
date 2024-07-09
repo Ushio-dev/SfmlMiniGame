@@ -4,11 +4,6 @@
 #include "GameState.h"
 #include "Player.h"
 
-typedef struct {
-	float x;
-	float y;
-}BallPosition;
-
 class Ball
 {
 public:
@@ -23,7 +18,6 @@ public:
 
 private:
 	sf::CircleShape ball;
-	BallPosition position;
 	sf::Vector2f velocity;
 	
 	void resetPosition();

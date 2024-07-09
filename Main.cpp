@@ -26,6 +26,18 @@ int main()
     std::string fontPath = "Fonts/Roboto-Bold.ttf";
 
 
+    sf::RectangleShape midWhiteleLine;
+    sf::RectangleShape midBlackLine;
+
+    auto middleSize = sf::Vector2f(3, 30);
+    midWhiteleLine.setFillColor(sf::Color::White);
+    midWhiteleLine.setSize(middleSize);
+    midWhiteleLine.setOrigin(midWhiteleLine.getSize().x / 2, midWhiteleLine.getSize().y / 2);
+
+    midBlackLine.setFillColor(sf::Color::Black);
+    midBlackLine.setSize(middleSize);
+    midBlackLine.setOrigin(midBlackLine.getSize().x / 2, midBlackLine.getSize().y / 2);
+
     bool isPlayerOneMovingUp = false;
     bool isPlayerOneMovingDown = false;
     bool isPlayerTwoMovingUp = false;
@@ -42,6 +54,8 @@ int main()
     if (!font.loadFromFile(fontPath)) {
         throw("No se puede abrir archivo");
     }
+
+
   
     playerOneScore.setFont(font);
     playerTwoScore.setFont(font);
@@ -110,6 +124,7 @@ int main()
         }
 
         if (gameState != GameState::FINISHED) {
+            int initialMidLinePos = 0;
             if (playerOne.getScore() != 5 && playerTwo.getScore() != 5) {
                 if (isPlayerOneMovingUp)
                     playerOne.update(Movement::UP);
@@ -135,6 +150,20 @@ int main()
                 }
 
                 window.clear();
+                
+                for (auto i = 0; i < 22; i++)
+                {
+                    if (i % 2 == 0) {
+                        midWhiteleLine.setPosition(sf::Vector2f(400, initialMidLinePos));
+                        window.draw(midWhiteleLine);
+                    }
+                    else {
+                        midBlackLine.setPosition(sf::Vector2f(400, initialMidLinePos));
+                        window.draw(midBlackLine);
+                    }
+
+                    initialMidLinePos += 30;
+                }
 
                 ball.update(playerOne.getPlayerBound(), playerTwo.getPlayerBound(), gameState);
                 ball.draw(&window);
